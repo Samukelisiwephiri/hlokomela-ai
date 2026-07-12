@@ -80,7 +80,16 @@
       assistant_fallback: 'I can help with low pressure, repairs, water saving, and reporting issues.',
       login_button_text: 'Login to community dashboard',
       municipality_login_button_text: 'Enter municipality dashboard',
-      language_label: 'Language'
+      language_label: 'Language',
+      consent_title: 'Before you report an issue',
+      consent_body: 'Hlokomela AI collects the details you submit (photo, location, description) to help your municipality respond to water issues faster. Your report may be shared with municipal water teams. We don\u2019t sell your data or share it with third parties outside this purpose. By continuing, you agree to this use of your information, in line with South Africa\u2019s POPIA.',
+      consent_learn_more: 'Learn more',
+      consent_agree: 'Agree & Continue',
+      consent_detail_title: 'Your data, your rights',
+      consent_detail_text: 'Hlokomela AI stores your reports for up to 24 months to improve service delivery and detect patterns. After this period, personal data is anonymised.',
+      consent_detail_retention: 'Data retention: Report data (including photos and location) is retained for 24 months. Anonymised data may be kept longer for network analysis.',
+      consent_detail_deletion: 'Right to deletion: You may request deletion of your personal data at any time by emailing privacy@hlokomela.ai. We will respond within 30 days.',
+      consent_detail_contact: 'Contact our Information Officer: privacy@hlokomela.ai for any POPIA-related queries or data access requests.'
     },
     zu: {
       nav_platform: 'I-Platform',
@@ -162,7 +171,16 @@
       assistant_fallback: 'Ngingakusiza mayelana nengcindezi ephansi, ukulungiswa, ukonga amanzi, nokubika izinkinga.',
       login_button_text: 'Ngena kwimodi yomphakathi',
       municipality_login_button_text: 'Faka idashibhohi yomasipala',
-      language_label: 'Ulimi'
+      language_label: 'Ulimi',
+      consent_title: 'Ngaphambi kokubika inkinga',
+      consent_body: 'IHlokomela AI iqoqa imininingwane oyithumelayo (isithombe, indawo, incazelo) ukusiza umasipala wakho uphendule ezinkingeni zamanzi ngokushesha. Isibiko sakho sangashayiselwana namaqembu amanzi omasipala. Asithengisi idatha yakho futhi asiyihlanganisi nabantu abangaphandle kolaka lokhu. Ngiqhubeka, uyavuma ukusetshenziswa kolunye ulwazi lwakho, ngokuhambisana ne-POPIA yaseNingizimu Afrika.',
+      consent_learn_more: 'Funda okuningi',
+      consent_agree: 'Vumelana & Qhubeka',
+      consent_detail_title: 'Idatha yakho, amalungelo akho',
+      consent_detail_text: 'IHlokomela AI igcina izibiko zakho iminyaka engu-24 ukuze ithuthukise ukulethwa kwenkonzo futhi ibone izimo. Ngemva kwaleso sikhathi, imininingwane yokubona icutshungulwa.',
+      consent_detail_retention: 'Ukugcina idatha: Idatha yesibiko (kufaka isithombe nendawo) igcinwe iminyaka engu-24. Idatha elungisiwe ingagcinwa isikhathi eside ukuze icutshungulwe.',
+      consent_detail_deletion: 'Amalungelo okususa: Ungacela ukususwa kwedatha yakho noma nini ngokuthumela i-email ku-privacy@hlokomela.ai. Sizophendula phakathi kwezinsuku ezingu-30.',
+      consent_detail_contact: 'Xhumana noMphathi weData: privacy@hlokomela.ai noma yiziphi izibuzo ezihlobene ne-POPIA noma izicelo zokufinyelela kwedatha.'
     },
     af: {
       nav_platform: 'Platform',
@@ -244,7 +262,16 @@
       assistant_fallback: 'Ek kan help met lae druk, herstelwerk, watersbesparing en probleemrapportering.',
       login_button_text: 'Teken aan tot gemeenskapsdashboard',
       municipality_login_button_text: 'Betree munisipale dashboard',
-      language_label: 'Taal'
+      language_label: 'Taal',
+      consent_title: 'Voordat jy \'n probleem rapporteer',
+      consent_body: 'Hlokomela AI versamel die besonderhede wat jy indien (foto, ligging, beskrywing) om jou munisipaliteit te help om vinniger op waterprobleme te reageer. Jou verslag mag met munisipale waterspanne gedeel word. Ons verkoop nie jou data nie en deel dit nie met derde partye buiten hierdie doel nie. Deur voort te gaan, stem jy in met hierdie gebruik van jou inligting, in lyn met Suid-Afrika se POPIA.',
+      consent_learn_more: 'Leer meer',
+      consent_agree: 'Stem in & Gaan voort',
+      consent_detail_title: 'Jou data, jou regte',
+      consent_detail_text: 'Hlokomela AI stoor jou verslae vir tot 24 maande om dienslewering te verbeter en patrone op te spoor. Na hierdie tydperk word persoonlike data geanonimiseer.',
+      consent_detail_retention: 'Data-berging: Verslagdata (insluitend foto\'s en ligging) word vir 24 maande gestoor. Geanonimiseerde data mag langer bewaar word vir netwerkanalise.',
+      consent_detail_deletion: 'Reg tot verwydering: Jy mag enige tyd verwydering van jou persoonlike data versoek deur \'n e-pos te stuur na privacy@hlokomela.ai. Ons sal binne 30 dae reageer.',
+      consent_detail_contact: 'Kontak ons Inligtingsbeampte: privacy@hlokomela.ai vir enige POPIA-verwante navrae of datatoegangversoeke.'
     }
   };
 
