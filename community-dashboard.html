@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Community Dashboard | Hlokomela AI</title>
+  <link rel="stylesheet" href="community.css">
+  <link rel="stylesheet" href="logo.css">
+</head>
+<body>
+  <div class="dashboard-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Community portal</p>
+        <h1 data-i18n="community_welcome">Hello, Samukelisiwe 👋</h1>
+        <p class="subtitle" data-i18n="community_subtitle">Welcome back. Your water network is being monitored in real time.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.6rem"><div class="status-pill" data-i18n="community_status">● Live updates</div><label style="display:flex;align-items:center;gap:.35rem;font-size:.85rem;color:#31565a"><span data-i18n="language_label">Language</span><select id="language-selector" style="padding:.35rem .5rem;border-radius:999px;border:1px solid #dbe8e1"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label></div>
+    </header>
+
+    <section class="cards-grid">
+      <article class="card card-accent">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_status_title">Water status near you</p>
+          <span class="badge success" data-i18n="card_status_normal">Normal</span>
+        </div>
+        <h2 data-i18n="card_status_text">No leaks detected nearby.</h2>
+        <p>Your ward is currently stable and the municipality has not reported any urgent issues.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_report_title">Report a water problem</p>
+          <span class="badge warning">Fast</span>
+        </div>
+        <button class="report-btn" id="open-report" type="button" data-i18n="card_report_button">+ Report issue</button>
+        <p class="small">Upload a photo, describe the issue, and let AI assess the urgency.</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_ai_title">AI assistant</p>
+          <span class="badge info">Instant</span>
+        </div>
+        <div class="prompt-list">
+          <button class="prompt-chip" data-answer="Your pressure may be low because of a local blockage or a wider network issue. The municipality is reviewing nearby pressure trends now.">Why is my water pressure low?</button>
+          <button class="prompt-chip" data-answer="A repair team has been notified and the expected response is within 4 hours based on the severity score.">Will this be fixed today?</button>
+          <button class="prompt-chip" data-answer="Small changes make a difference: turn off taps while brushing, fix leaks quickly, and water gardens at sunset.">How can I save water?</button>
+          <button class="prompt-chip" data-answer="You can report another issue from this dashboard. Add the location, type, and photo so the municipality can act quickly.">How do I report another leak?</button>
+        </div>
+        <div class="assistant-response" id="assistant-response" data-i18n="assistant_hint">Ask the assistant anything about your local water service.</div>
+        <div class="voice-row">
+          <button class="report-btn small" id="voice-report" type="button" data-i18n="voice_button">🎤 Report using your voice</button>
+        </div>
+        <div class="assistant-input">
+          <input id="assistant-input" type="text" placeholder="Ask the assistant" data-i18n="chat_placeholder">
+          <button class="report-btn small" id="send-assistant" type="button">Ask</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_tips_title">Water saving tips</p>
+          <span class="badge success">Daily AI tips</span>
+        </div>
+        <ul class="tips-list">
+          <li>💧 Turn off taps while brushing</li>
+          <li>💧 Fix leaking toilets</li>
+          <li>💧 Collect rainwater</li>
+          <li>💧 Water gardens at sunset</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_reports_title">My reports</p>
+          <span class="badge warning">In progress</span>
+        </div>
+        <h3>Report #1023</h3>
+        <p><strong>Status:</strong> In progress</p>
+        <p><strong>Assigned team:</strong> Municipality crew</p>
+        <p><strong>ETA:</strong> 2 hours</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_alerts_title">Nearby alerts</p>
+          <span class="badge danger">Urgent</span>
+        </div>
+        <div class="alert-item">
+          <strong>Road A</strong>
+          <p>Burst pipe · 2 km away</p>
+          <span>Expected repair: 17:00</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_usage_title">Community water usage</p>
+          <span class="badge success">This week</span>
+        </div>
+        <h2>120 L</h2>
+        <p class="small">10% lower than last week. Great job!</p>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <p class="card-label" data-i18n="card_points_title">Earn eco points</p>
+          <span class="badge info">+20 per report</span>
+        </div>
+        <div class="points-stack">
+          <div><strong>+20</strong><span>Every report</span></div>
+          <div><strong>+5</strong><span>Water streak</span></div>
+          <div><strong>+15</strong><span>Volunteer</span></div>
+        </div>
+        <h3>Top water heroes</h3>
+        <ol class="leaderboard">
+          <li>🥇 Sipho</li>
+          <li>🥈 Naledi</li>
+          <li>🥉 Themba</li>
+        </ol>
+      </article>
+    </section>
+  </div>
+
+  <div class="modal" id="report-modal" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h2 data-i18n="report_modal_title">Report a problem</h2>
+        <button type="button" class="close-btn" id="close-report">×</button>
+      </div>
+      <form id="issue-form">
+        <label data-i18n="report_type">Problem type
+          <select required>
+            <option>Leak</option>
+            <option>Burst Pipe</option>
+            <option>Low Pressure</option>
+            <option>No Water</option>
+            <option>Illegal Connection</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label data-i18n="report_location">Location
+          <input type="text" placeholder="Ward 17, Road A" required>
+        </label>
+        <label data-i18n="report_photo">Upload photo
+          <input type="file">
+        </label>
+        <label data-i18n="report_description">Description
+          <textarea placeholder="Tell us what you noticed"></textarea>
+        </label>
+        <button type="submit" class="report-btn full" data-i18n="report_submit">Submit</button>
+        <p class="form-note" id="form-note" data-i18n="report_note">AI is analysing your report and the municipality will be notified.</p>
+      </form>
+    </div>
+  </div>
+
+  <script src="ai.js"></script>
+  <script src="community.js"></script>
+</body>
+</html>

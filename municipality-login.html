@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Municipality Login | Hlokomela AI</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="logo.css">
+</head>
+<body>
+  <main class="login-shell">
+    <section class="login-card">
+      <div class="brand-block">
+        <div class="brand-mark">◌</div>
+        <div>
+          <p class="eyebrow">Municipality access</p>
+          <h1>Command centre login</h1>
+        </div>
+      </div>
+      <p class="intro" data-i18n="municipality_login_intro">Secure sign-in for ward supervisors and municipal operations teams.</p>
+      <form class="login-form" data-role="municipality">
+        <label>Department
+          <input type="text" placeholder="Water Services" required>
+        </label>
+        <label>Email address
+          <input type="email" placeholder="ops@municipality.gov.za" required>
+        </label>
+        <label>Password
+          <input type="password" placeholder="••••••••" required>
+        </label>
+        <button type="submit" data-i18n="municipality_login_button_text">Enter municipality dashboard</button>
+      </form>
+      <a class="back-link" href="index.html">Back to home</a>
+    </section>
+  </main>
+  <script src="ai.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
