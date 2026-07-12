@@ -17,7 +17,7 @@
       role_community: 'Community Member',
       role_community_desc: 'Report issues and track local water updates',
       continue_button: 'Continue',
-      community_welcome: 'Hello, Samukelisiwe 👋',
+      community_welcome: 'Hello, User 👋',
       community_subtitle: 'Welcome back. Your water network is being monitored in real time.',
       community_status: 'Live updates',
       card_status_title: 'Water status near you',
