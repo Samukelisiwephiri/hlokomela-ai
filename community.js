@@ -8,6 +8,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const sendAssistant = document.getElementById('send-assistant');
   const voiceButton = document.getElementById('voice-report');
   const note = document.getElementById('form-note');
+  const greeting = document.getElementById('community-greeting');
+
+  function updateCommunityGreeting() {
+    const ai = window.HlokomelaAI;
+    const lang = ai ? ai.getLanguage() : 'en';
+    const storedName = localStorage.getItem('hlokomela-community-name')?.trim();
+    const name = storedName || 'there';
+    const greetings = {
+      en: `Hello, ${name} 👋`,
+      zu: `Sawubona, ${name} 👋`,
+      af: `Hallo, ${name} 👋`
+    };
+
+    if (greeting) {
+      greeting.textContent = greetings[lang] || greetings.en;
+    }
+  }
+
+  updateCommunityGreeting();
 
   openReport?.addEventListener('click', () => {
     reportModal.classList.add('open');
