@@ -123,6 +123,26 @@
     </section>
   </div>
 
+  <div class="modal" id="consent-modal" aria-hidden="true">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h2 data-i18n="consent_title">Before you report an issue</h2>
+      </div>
+      <p style="margin:0 0 1rem;color:#31565a;line-height:1.6" data-i18n="consent_body">Hlokomela AI collects the details you submit (photo, location, description) to help your municipality respond to water issues faster. Your report may be shared with municipal water teams. We don't sell your data or share it with third parties outside this purpose. By continuing, you agree to this use of your information, in line with South Africa's POPIA.</p>
+      <div id="consent-detail" class="consent-detail" hidden>
+        <h3 data-i18n="consent_detail_title">Your data, your rights</h3>
+        <p data-i18n="consent_detail_text">Hlokomela AI stores your reports for up to 24 months to improve service delivery and detect patterns. After this period, personal data is anonymised.</p>
+        <p data-i18n="consent_detail_retention">Data retention: Report data (including photos and location) is retained for 24 months. Anonymised data may be kept longer for network analysis.</p>
+        <p data-i18n="consent_detail_deletion">Right to deletion: You may request deletion of your personal data at any time by emailing privacy@hlokomela.ai. We will respond within 30 days.</p>
+        <p data-i18n="consent_detail_contact">Contact our Information Officer: privacy@hlokomela.ai for any POPIA-related queries or data access requests.</p>
+      </div>
+      <div class="consent-actions">
+        <button type="button" class="consent-btn-secondary" id="consent-learn-more" data-i18n="consent_learn_more">Learn more</button>
+        <button type="button" class="report-btn" id="consent-agree" data-i18n="consent_agree">Agree & Continue</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="report-modal" aria-hidden="true">
     <div class="modal-box">
       <div class="modal-top">

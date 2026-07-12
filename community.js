@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const reportModal = document.getElementById('report-modal');
+  const consentModal = document.getElementById('consent-modal');
+  const consentDetail = document.getElementById('consent-detail');
+  const consentLearnMore = document.getElementById('consent-learn-more');
+  const consentAgree = document.getElementById('consent-agree');
   const openReport = document.getElementById('open-report');
   const closeReport = document.getElementById('close-report');
   const form = document.getElementById('issue-form');
@@ -9,6 +13,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const voiceButton = document.getElementById('voice-report');
   const note = document.getElementById('form-note');
   const greeting = document.getElementById('community-greeting');
+
+  function hasConsent() {
+    try {
+      const stored = JSON.parse(localStorage.getItem('hlokomela_consent'));
+      return stored && stored.agreed === true;
+    } catch {
+      return false;
+    }
+  }
+
+  function showConsentModal() {
+    if (consentModal) consentModal.classList.add('open');
+  }
+
+  function hideConsentModal() {
+    if (consentModal) consentModal.classList.remove('open');
+  }
+
+  if (!hasConsent()) {
+    showConsentModal();
+  }
+
+  consentLearnMore?.addEventListener('click', () => {
+    if (consentDetail) {
+      const isHidden = consentDetail.hidden;
+      consentDetail.hidden = !isHidden;
+      const lang = window.HlokomelaAI?.getLanguage() || 'en';
+      const labels = { en: ['Learn more', 'Show less'], zu: ['Funda okuningi', 'Funda okuncane'], af: ['Leer meer', 'Minder'] };
+      const pair = labels[lang] || labels.en;
+      consentLearnMore.textContent = isHidden ? pair[0] : pair[1];
+    }
+  });
+
+  consentAgree?.addEventListener('click', () => {
+    localStorage.setItem('hlokomela_consent', JSON.stringify({ agreed: true, timestamp: new Date().toISOString() }));
+    hideConsentModal();
+  });
+
+  consentModal?.addEventListener('click', event => {
+    if (event.target === consentModal && hasConsent()) {
+      hideConsentModal();
+    }
+  });
 
   function updateCommunityGreeting() {
     const ai = window.HlokomelaAI;
@@ -29,6 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCommunityGreeting();
 
   openReport?.addEventListener('click', () => {
+    if (!hasConsent()) {
+      showConsentModal();
+      return;
+    }
     reportModal.classList.add('open');
   });
 
