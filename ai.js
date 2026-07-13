@@ -89,7 +89,10 @@
       consent_detail_text: 'Hlokomela AI stores your reports for up to 24 months to improve service delivery and detect patterns. After this period, personal data is anonymised.',
       consent_detail_retention: 'Data retention: Report data (including photos and location) is retained for 24 months. Anonymised data may be kept longer for network analysis.',
       consent_detail_deletion: 'Right to deletion: You may request deletion of your personal data at any time by emailing privacy@hlokomela.ai. We will respond within 30 days.',
-      consent_detail_contact: 'Contact our Information Officer: privacy@hlokomela.ai for any POPIA-related queries or data access requests.'
+      consent_detail_contact: 'Contact our Information Officer: privacy@hlokomela.ai for any POPIA-related queries or data access requests.',
+      report_urgency_label: 'Urgency',
+      report_urgency_text: 'AI will assess urgency after submission',
+      report_confirm: 'Report received \u2014 you\u2019ll be notified as it\u2019s reviewed.'
     },
     zu: {
       nav_platform: 'I-Platform',
@@ -180,7 +183,10 @@
       consent_detail_text: 'IHlokomela AI igcina izibiko zakho iminyaka engu-24 ukuze ithuthukise ukulethwa kwenkonzo futhi ibone izimo. Ngemva kwaleso sikhathi, imininingwane yokubona icutshungulwa.',
       consent_detail_retention: 'Ukugcina idatha: Idatha yesibiko (kufaka isithombe nendawo) igcinwe iminyaka engu-24. Idatha elungisiwe ingagcinwa isikhathi eside ukuze icutshungulwe.',
       consent_detail_deletion: 'Amalungelo okususa: Ungacela ukususwa kwedatha yakho noma nini ngokuthumela i-email ku-privacy@hlokomela.ai. Sizophendula phakathi kwezinsuku ezingu-30.',
-      consent_detail_contact: 'Xhumana noMphathi weData: privacy@hlokomela.ai noma yiziphi izibuzo ezihlobene ne-POPIA noma izicelo zokufinyelela kwedatha.'
+      consent_detail_contact: 'Xhumana noMphathi weData: privacy@hlokomela.ai noma yiziphi izibuzo ezihlobene ne-POPIA noma izicelo zokufinyelela kwedatha.',
+      report_urgency_label: 'Urgency',
+      report_urgency_text: 'I-AI izohlola ubudingo ngemva kokuthunyelwa',
+      report_confirm: 'Isibiko samukelwe \u2014 uzokwaziswa uma sihlolwa.'
     },
     af: {
       nav_platform: 'Platform',
@@ -271,7 +277,10 @@
       consent_detail_text: 'Hlokomela AI stoor jou verslae vir tot 24 maande om dienslewering te verbeter en patrone op te spoor. Na hierdie tydperk word persoonlike data geanonimiseer.',
       consent_detail_retention: 'Data-berging: Verslagdata (insluitend foto\'s en ligging) word vir 24 maande gestoor. Geanonimiseerde data mag langer bewaar word vir netwerkanalise.',
       consent_detail_deletion: 'Reg tot verwydering: Jy mag enige tyd verwydering van jou persoonlike data versoek deur \'n e-pos te stuur na privacy@hlokomela.ai. Ons sal binne 30 dae reageer.',
-      consent_detail_contact: 'Kontak ons Inligtingsbeampte: privacy@hlokomela.ai vir enige POPIA-verwante navrae of datatoegangversoeke.'
+      consent_detail_contact: 'Kontak ons Inligtingsbeampte: privacy@hlokomela.ai vir enige POPIA-verwante navrae of datatoegangversoeke.',
+      report_urgency_label: 'Dringendheid',
+      report_urgency_text: 'KI sal dringendheid assesseer na indiening',
+      report_confirm: 'Verslag ontvang \u2014 jy sal in kennis gestel word sodra dit hersien word.'
     }
   };
 
