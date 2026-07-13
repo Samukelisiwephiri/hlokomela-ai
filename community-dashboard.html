@@ -150,27 +150,21 @@
         <button type="button" class="close-btn" id="close-report">×</button>
       </div>
       <form id="issue-form">
-        <label data-i18n="report_type">Problem type
-          <select required>
-            <option>Leak</option>
-            <option>Burst Pipe</option>
-            <option>Low Pressure</option>
-            <option>No Water</option>
-            <option>Illegal Connection</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label data-i18n="report_location">Location
-          <input type="text" placeholder="Ward 17, Road A" required>
-        </label>
         <label data-i18n="report_photo">Upload photo
-          <input type="file">
+          <input type="file" accept="image/*" id="report-file" required>
+        </label>
+        <!-- TODO: replace text input with geolocation / pin-drop map for real deployment -->
+        <label data-i18n="report_location">Location
+          <input type="text" placeholder="e.g. Central Main, School Zone" id="report-location" required>
         </label>
         <label data-i18n="report_description">Description
-          <textarea placeholder="Tell us what you noticed"></textarea>
+          <textarea placeholder="Tell us what you noticed" id="report-desc" required></textarea>
+        </label>
+        <label data-i18n="report_urgency_label">Urgency
+          <input type="text" class="urgency-field" id="report-urgency" readonly data-i18n="report_urgency_text" value="AI will assess urgency after submission">
         </label>
         <button type="submit" class="report-btn full" data-i18n="report_submit">Submit</button>
-        <p class="form-note" id="form-note" data-i18n="report_note">AI is analysing your report and the municipality will be notified.</p>
+        <p class="form-note" id="form-note" data-i18n="report_confirm">Report received — you'll be notified as it's reviewed.</p>
       </form>
     </div>
   </div>

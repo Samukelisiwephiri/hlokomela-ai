@@ -97,12 +97,26 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
     const ai = window.HlokomelaAI;
     const lang = ai ? ai.getLanguage() : 'en';
-    const reportText = form.querySelector('textarea')?.value || 'Leak reported';
-    const incident = ai ? ai.createIncidentReport(reportText, lang) : { id: '#458', severity: 'High', reason: 'Leak reported', priority: 'Immediate response' };
-    const message = `${incident.id} · ${incident.severity} · ${incident.priority}`;
-    if (note) note.textContent = message;
-    if (ai) ai.saveReport(incident);
-    if (ai) ai.renderMunicipalityInsights(lang);
+    const fileInput = document.getElementById('report-file');
+    const locationInput = document.getElementById('report-location');
+    const descInput = document.getElementById('report-desc');
+    const photoName = fileInput?.files?.[0]?.name || '';
+    const location = locationInput?.value?.trim() || '';
+    const description = descInput?.value?.trim() || '';
+    const report = {
+      id: `RPT-${Date.now()}`,
+      photo: photoName,
+      location,
+      description,
+      timestamp: new Date().toISOString(),
+      status: 'Reported'
+    };
+    const stored = JSON.parse(localStorage.getItem('hlokomela_reports') || '[]');
+    stored.unshift(report);
+    localStorage.setItem('hlokomela_reports', JSON.stringify(stored.slice(0, 50)));
+    const confirmMsg = ai ? ai.translate('report_confirm', lang) : 'Report received — you\'ll be notified as it\'s reviewed.';
+    if (note) note.textContent = confirmMsg;
+    form.reset();
     reportModal.classList.remove('open');
   });
 
