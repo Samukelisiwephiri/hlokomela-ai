@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function hasConsent() {
     try {
-      const stored = JSON.parse(localStorage.getItem('hlokomela_consent'));
+      const stored = JSON.parse(sessionStorage.getItem('hlokomela_consent'));
       return stored && stored.agreed === true;
     } catch {
       return false;
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   consentAgree?.addEventListener('click', () => {
-    localStorage.setItem('hlokomela_consent', JSON.stringify({ agreed: true, timestamp: new Date().toISOString() }));
+    sessionStorage.setItem('hlokomela_consent', JSON.stringify({ agreed: true, timestamp: new Date().toISOString() }));
     hideConsentModal();
   });
 
