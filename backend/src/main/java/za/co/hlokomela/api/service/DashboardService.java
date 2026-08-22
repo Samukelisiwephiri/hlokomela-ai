@@ -4,9 +4,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import za.co.hlokomela.api.domain.Incident;
 import za.co.hlokomela.api.domain.IncidentStatus;
 import za.co.hlokomela.api.domain.PipeAsset;
@@ -51,7 +53,8 @@ public class DashboardService {
         int coverage = allPipes.isEmpty() ? 0 : (int) Math.round(online * 100.0 / allPipes.size());
         List<Incident> priority = incidents.findByMunicipalityIdOrderByCreatedAtDesc(municipalityId, PageRequest.of(0, 20))
             .getContent().stream().filter(incident -> ACTIVE_STATUSES.contains(incident.getStatus()))
-            .sorted(Comparator.comparingDouble(Incident::getRiskScore).reversed()).limit(5).toList();
+            .sorted(Comparator.comparingDouble((Incident incident) -> incident.getRiskScore()).reversed())
+            .limit(5).toList();
         return new DashboardSummaryResponse(allPipes.size(), highRiskPipes,
             incidents.countByMunicipalityIdAndStatusNot(municipalityId, IncidentStatus.RESOLVED),
             reports.countByMunicipalityIdAndCreatedAtAfter(municipalityId, Instant.now().minus(1, ChronoUnit.DAYS)),

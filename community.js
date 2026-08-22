@@ -13,6 +13,57 @@ document.addEventListener('DOMContentLoaded', () => {
   const voiceButton = document.getElementById('voice-report');
   const note = document.getElementById('form-note');
   const greeting = document.getElementById('community-greeting');
+  const useLocation = document.getElementById('use-location');
+  const locationStatus = document.getElementById('location-status');
+  const locationPreview = document.getElementById('location-preview');
+  const locationMap = document.getElementById('location-map');
+  const locationMapLink = document.getElementById('location-map-link');
+  let coordinates = { latitude: null, longitude: null };
+
+  const currentUser = window.HlokomelaAPI?.currentUser();
+  if (window.HlokomelaAPI?.isAuthenticated()
+      && currentUser?.role
+      && currentUser.role !== 'COMMUNITY_MEMBER') {
+    window.location.replace('community-login.html');
+    return;
+  }
+
+  function updateLocationPreview() {
+    const { latitude, longitude } = coordinates;
+    if (latitude === null || longitude === null) {
+      if (locationPreview) locationPreview.hidden = true;
+      return;
+    }
+    const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=16`;
+    if (locationMap) locationMap.src = `${mapsUrl}&output=embed`;
+    if (locationMapLink) locationMapLink.href = mapsUrl;
+    if (locationPreview) locationPreview.hidden = false;
+  }
+
+  function captureLocation() {
+    if (!navigator.geolocation) {
+      if (locationStatus) locationStatus.textContent = 'Location is unavailable in this browser.';
+      return;
+    }
+    if (locationStatus) locationStatus.textContent = 'Requesting location...';
+    if (useLocation) useLocation.disabled = true;
+    navigator.geolocation.getCurrentPosition(position => {
+      coordinates = {
+        latitude: Number(position.coords.latitude.toFixed(6)),
+        longitude: Number(position.coords.longitude.toFixed(6))
+      };
+      if (locationStatus) locationStatus.textContent = `Location captured (${coordinates.latitude}, ${coordinates.longitude})`;
+      updateLocationPreview();
+      if (useLocation) useLocation.disabled = false;
+    }, error => {
+      coordinates = { latitude: null, longitude: null };
+      updateLocationPreview();
+      if (locationStatus) locationStatus.textContent = error.code === 1
+        ? 'Location permission was denied. You can enter it manually.'
+        : 'Could not capture location. You can enter it manually.';
+      if (useLocation) useLocation.disabled = false;
+    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+  }
 
   function hasConsent() {
     try {
@@ -102,7 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     reportModal.classList.add('open');
+    captureLocation();
   });
+
+  useLocation?.addEventListener('click', captureLocation);
 
   closeReport?.addEventListener('click', () => {
     reportModal.classList.remove('open');
@@ -128,6 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const report = {
       type: typeInput?.value || 'OTHER',
       location,
+      latitude: coordinates.latitude,
+      longitude: coordinates.longitude,
       description,
       consentGiven: hasConsent()
     };
@@ -141,6 +197,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const confirmMsg = ai ? ai.translate('report_confirm', lang) : 'Report received.';
       if (note) note.textContent = confirmMsg;
       form.reset();
+      coordinates = { latitude: null, longitude: null };
+      updateLocationPreview();
+      if (locationStatus) locationStatus.textContent = 'Location not captured';
       reportModal.classList.remove('open');
       loadReports();
     }).catch(error => {
@@ -148,11 +207,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  function handleAssistantReply(question) {
+  async function handleAssistantReply(question) {
     const ai = window.HlokomelaAI;
     const lang = ai ? ai.getLanguage() : 'en';
-    const response = ai ? ai.getAiAssistantReply(question, lang) : question;
-    if (assistantResponse) assistantResponse.textContent = response;
+    const fallback = ai ? ai.getAiAssistantReply(question, lang) : question;
+    if (assistantResponse) assistantResponse.textContent = 'Connecting to Hlokomela AI...';
+    try {
+      const result = await window.HlokomelaAPI?.askAssistant(question, lang);
+      if (assistantResponse) assistantResponse.textContent = result?.live && result.answer ? result.answer : fallback;
+    } catch {
+      if (assistantResponse) assistantResponse.textContent = fallback;
+    }
   }
 
   sendAssistant?.addEventListener('click', () => {

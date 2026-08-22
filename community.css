@@ -18,6 +18,10 @@ body {
 }
 .dashboard-shell { max-width: 1240px; margin: 0 auto; padding: 28px 20px 50px; }
 .topbar { display: flex; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 22px; }
+.topbar-controls { display: flex; flex-direction: column; align-items: flex-end; gap: .6rem; }
+.language-control { display: flex; align-items: center; gap: .35rem; font-size: .85rem; color: #31565a; }
+.language-control select { padding: .35rem .5rem; border-radius: 999px; border: 1px solid #dbe8e1; }
+.consent-copy { margin: 0 0 1rem; color: #31565a; line-height: 1.6; }
 .topbar h1 { margin: 4px 0 4px; font-size: clamp(1.7rem, 3vw, 2.5rem); }
 .subtitle { margin: 0; color: #5b7175; }
 .status-pill { padding: 0.6rem 0.9rem; border-radius: 999px; background: var(--mint); color: var(--teal); font-weight: 800; }
@@ -45,14 +49,21 @@ body {
 .leaderboard { margin: 0; padding-left: 18px; color: #345158; display: grid; gap: 6px; }
 .alert-item { padding: 0.75rem 0; border-top: 1px solid #e5efea; }
 .alert-item:first-of-type { border-top: 0; padding-top: 0; }
-.modal { position: fixed; inset: 0; display: none; place-items: center; background: rgba(3, 30, 35, 0.75); padding: 20px; }
+.modal { position: fixed; inset: 0; display: none; place-items: center; overflow-y: auto; background: rgba(3, 30, 35, 0.75); padding: 20px; }
 .modal.open { display: grid; }
-.modal-box { width: min(520px, 100%); padding: 20px; border-radius: 20px; background: var(--white); box-shadow: 0 16px 42px rgba(0,0,0,0.2); }
+.modal-box { width: min(520px, 100%); max-height: calc(100vh - 40px); overflow-y: auto; padding: 20px; border-radius: 20px; background: var(--white); box-shadow: 0 16px 42px rgba(0,0,0,0.2); }
 .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .close-btn { border: 0; background: transparent; font-size: 1.4rem; cursor: pointer; }
 form label { display: grid; gap: 6px; margin-bottom: 10px; font-weight: 700; color: #234147; }
 form input, form select, form textarea { width: 100%; padding: 0.8rem 0.9rem; border: 1px solid #d7e6e2; border-radius: 10px; font: inherit; }
 form textarea { min-height: 90px; resize: vertical; }
+.location-actions { display: flex; align-items: center; gap: 8px; margin: -2px 0 10px; flex-wrap: wrap; }
+.location-btn { border: 1px solid #b8d8cf; border-radius: 8px; padding: 0.5rem 0.7rem; background: #edf8f4; color: #1d5a52; font: inherit; font-size: 0.85rem; cursor: pointer; }
+.location-btn:disabled { cursor: wait; opacity: 0.65; }
+.location-status { color: #5d7073; font-size: 0.82rem; }
+.location-preview { display: grid; gap: 6px; margin: -2px 0 10px; }
+.location-preview iframe { width: 100%; height: 180px; border: 0; border-radius: 10px; }
+.location-preview a { color: var(--teal); font-size: 0.82rem; font-weight: 700; }
 .form-note { margin-top: 10px; color: #5d7073; font-size: 0.9rem; }
 .urgency-field { background: #f3fbf8; color: #5d7073; font-style: italic; cursor: default; }
 @media (max-width: 900px) { .cards-grid { grid-template-columns: 1fr; } }

@@ -1,9 +1,12 @@
 package za.co.hlokomela.api.service;
 
+import java.util.Objects;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
 import za.co.hlokomela.api.domain.Municipality;
 import za.co.hlokomela.api.domain.Role;
 import za.co.hlokomela.api.domain.UserAccount;
@@ -59,7 +62,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public UserResponse currentUser(UserPrincipal principal) {
-        UserAccount account = users.findById(principal.id())
+        UserAccount account = users.findById(Objects.requireNonNull(principal.id()))
             .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
         return ResponseMapper.user(account);
     }

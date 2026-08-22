@@ -1,13 +1,14 @@
 package za.co.hlokomela.api.service;
 
-import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
@@ -15,6 +16,8 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.annotation.PostConstruct;
 import za.co.hlokomela.api.config.StorageProperties;
 import za.co.hlokomela.api.exception.ResourceNotFoundException;
 import za.co.hlokomela.api.exception.StorageException;
@@ -30,6 +33,7 @@ public class LocalFileStorageService {
     }
 
     @PostConstruct
+    @SuppressWarnings("unused")
     void initialize() {
         try {
             root = Path.of(properties.getUploadDirectory()).toAbsolutePath().normalize();
@@ -46,7 +50,7 @@ public class LocalFileStorageService {
         if (file.getSize() > properties.getMaxFileSizeBytes()) {
             throw new IllegalArgumentException("Photo must not exceed " + properties.getMaxFileSizeBytes() + " bytes");
         }
-        String contentType = file.getContentType() == null ? "" : file.getContentType().toLowerCase(Locale.ROOT);
+        String contentType = Objects.requireNonNullElse(file.getContentType(), "").toLowerCase(Locale.ROOT);
         if (!ALLOWED_TYPES.contains(contentType)) {
             throw new IllegalArgumentException("Only JPEG, PNG, and WEBP images are accepted");
         }
@@ -78,7 +82,7 @@ public class LocalFileStorageService {
             throw new ResourceNotFoundException("Report photo was not found");
         }
         try {
-            Resource resource = new UrlResource(file.toUri());
+            Resource resource = new UrlResource(Objects.requireNonNull(file.toUri()));
             if (!resource.exists() || !resource.isReadable()) {
                 throw new ResourceNotFoundException("Report photo was not found");
             }

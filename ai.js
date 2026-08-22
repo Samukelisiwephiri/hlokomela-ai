@@ -309,6 +309,10 @@
       if (value) {
         if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
           element.placeholder = value;
+        } else if (element.children.length > 0) {
+          const textNode = [...element.childNodes].find(node =>
+            node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+          if (textNode) textNode.textContent = value;
         } else {
           element.textContent = value;
         }
@@ -373,13 +377,16 @@
 
   function getAiAssistantReply(question, lang) {
     const value = (question || '').toLowerCase();
-    if (value.includes('pressure') || value.includes('amanzi') || value.includes('pressure')) {
+    if (value.includes('pressure') || value.includes('amanzi')) {
       return translate('assistant_pressure', lang);
     }
     if (value.includes('report') || value.includes('bika') || value.includes('rapport')) {
       return translate('assistant_report', lang);
     }
-    if (value.includes('save') || value.includes('water') || value.includes('ong') || value.includes('water')) {
+    if (value.includes('fix') || value.includes('repair') || value.includes('today') || value.includes('lungisa')) {
+      return 'A repair team will assess the incident based on its risk level. Check the latest municipal update for the expected restoration time.';
+    }
+    if (value.includes('save') || value.includes('water') || value.includes('ong')) {
       return translate('assistant_save', lang);
     }
     return translate('assistant_fallback', lang);

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Community Dashboard | Hlokomela AI</title>
-  <link rel="stylesheet" href="community.css">
+  <link rel="stylesheet" href="community.css?v=20260822">
   <link rel="stylesheet" href="logo.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
         <h1 id="community-greeting">Hello, user 👋</h1>
         <p class="subtitle" data-i18n="community_subtitle">Welcome back. Your water network is being monitored in real time.</p>
       </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.6rem"><div class="status-pill" data-i18n="community_status">● Live updates</div><label style="display:flex;align-items:center;gap:.35rem;font-size:.85rem;color:#31565a"><span data-i18n="language_label">Language</span><select id="language-selector" style="padding:.35rem .5rem;border-radius:999px;border:1px solid #dbe8e1"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label></div>
+      <div class="topbar-controls"><div class="status-pill" data-i18n="community_status">● Live updates</div><label class="language-control"><span data-i18n="language_label">Language</span><select id="language-selector"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label></div>
     </header>
 
     <section class="cards-grid">
@@ -125,7 +125,7 @@
       <div class="modal-top">
         <h2 data-i18n="consent_title">Before you report an issue</h2>
       </div>
-      <p style="margin:0 0 1rem;color:#31565a;line-height:1.6" data-i18n="consent_body">Hlokomela AI collects the details you submit (photo, location, description) to help your municipality respond to water issues faster. Your report may be shared with municipal water teams. We don't sell your data or share it with third parties outside this purpose. By continuing, you agree to this use of your information, in line with South Africa's POPIA.</p>
+      <p class="consent-copy" data-i18n="consent_body">Hlokomela AI collects the details you submit (photo, location, description) to help your municipality respond to water issues faster. Your report may be shared with municipal water teams. We don't sell your data or share it with third parties outside this purpose. By continuing, you agree to this use of your information, in line with South Africa's POPIA.</p>
       <div id="consent-detail" class="consent-detail" hidden>
         <h3 data-i18n="consent_detail_title">Your data, your rights</h3>
         <p data-i18n="consent_detail_text">Hlokomela AI stores your reports for up to 24 months to improve service delivery and detect patterns. After this period, personal data is anonymised.</p>
@@ -147,7 +147,7 @@
         <button type="button" class="close-btn" id="close-report">×</button>
       </div>
       <form id="issue-form">
-        <label data-i18n="report_type">Problem type
+        <label><span data-i18n="report_type">Problem type</span>
           <select id="report-type" required>
             <option value="LEAK">Leak</option>
             <option value="BURST_PIPE">Burst pipe</option>
@@ -157,17 +157,25 @@
             <option value="OTHER">Other</option>
           </select>
         </label>
-        <label data-i18n="report_photo">Upload photo
+        <label><span data-i18n="report_photo">Upload photo</span>
           <input type="file" accept="image/*" id="report-file">
         </label>
         <!-- TODO: replace text input with geolocation / pin-drop map for real deployment -->
-        <label data-i18n="report_location">Location
+        <label><span data-i18n="report_location">Location</span>
           <input type="text" placeholder="e.g. Central Main, School Zone" id="report-location" required>
         </label>
-        <label data-i18n="report_description">Description
+        <div class="location-actions">
+          <button type="button" class="location-btn" id="use-location">Use my current location</button>
+          <span class="location-status" id="location-status" role="status">Location not captured</span>
+        </div>
+        <div class="location-preview" id="location-preview" hidden>
+          <iframe id="location-map" title="Detected report location" loading="lazy"></iframe>
+          <a id="location-map-link" target="_blank" rel="noopener" href="#">Open location in Google Maps</a>
+        </div>
+        <label><span data-i18n="report_description">Description</span>
           <textarea placeholder="Tell us what you noticed" id="report-desc" required></textarea>
         </label>
-        <label data-i18n="report_urgency_label">Urgency
+        <label><span data-i18n="report_urgency_label">Urgency</span>
           <input type="text" class="urgency-field" id="report-urgency" readonly data-i18n="report_urgency_text" value="AI will assess urgency after submission">
         </label>
         <button type="submit" class="report-btn full" data-i18n="report_submit">Submit</button>
@@ -176,8 +184,8 @@
     </div>
   </div>
 
-  <script src="ai.js"></script>
+  <script src="ai.js?v=20260823"></script>
   <script src="api.js"></script>
-  <script src="community.js"></script>
+  <script src="community.js?v=20260822"></script>
 </body>
 </html>

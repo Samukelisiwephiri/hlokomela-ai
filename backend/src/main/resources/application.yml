@@ -39,6 +39,12 @@ app:
     max-file-size-bytes: ${UPLOAD_MAX_FILE_SIZE_BYTES:5242880}
   demo-data:
     enabled: ${SEED_DEMO_DATA:true}
+  ai:
+    enabled: ${AI_PROVIDER_ENABLED:false}
+    base-url: ${AI_PROVIDER_BASE_URL:https://api-ap-southeast-1.modelarts-maas.com/openai/v1}
+    api-key: ${AI_PROVIDER_API_KEY:}
+    model: ${AI_PROVIDER_MODEL:glm-5.1}
+    timeout-seconds: ${AI_PROVIDER_TIMEOUT_SECONDS:20}
 
 logging:
   level:

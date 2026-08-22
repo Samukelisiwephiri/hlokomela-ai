@@ -1,10 +1,13 @@
 package za.co.hlokomela.api.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import za.co.hlokomela.api.domain.Alert;
 import za.co.hlokomela.api.domain.UserAccount;
 import za.co.hlokomela.api.exception.ResourceNotFoundException;
@@ -23,7 +26,8 @@ public class AlertService {
 
     @Transactional
     public Alert markRead(UserAccount account, UUID id) {
-        Alert alert = alerts.findById(id).orElseThrow(() -> new ResourceNotFoundException("Alert was not found"));
+        Alert alert = alerts.findById(Objects.requireNonNull(id))
+            .orElseThrow(() -> new ResourceNotFoundException("Alert was not found"));
         if (!alert.getMunicipality().getId().equals(account.getMunicipality().getId())) {
             throw new ResourceNotFoundException("Alert was not found");
         }

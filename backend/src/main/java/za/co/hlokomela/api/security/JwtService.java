@@ -22,6 +22,7 @@ public class JwtService {
     }
 
     @PostConstruct
+    @SuppressWarnings("unused")
     void initialize() {
         byte[] keyBytes = Decoders.BASE64.decode(properties.getJwtSecret());
         if (keyBytes.length < 32) {

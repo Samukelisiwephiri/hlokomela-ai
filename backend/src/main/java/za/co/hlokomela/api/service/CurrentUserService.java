@@ -1,8 +1,11 @@
 package za.co.hlokomela.api.service;
 
 import java.util.Arrays;
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import za.co.hlokomela.api.domain.Role;
 import za.co.hlokomela.api.domain.UserAccount;
 import za.co.hlokomela.api.exception.ForbiddenOperationException;
@@ -20,7 +23,7 @@ public class CurrentUserService {
 
     @Transactional(readOnly = true)
     public UserAccount require(UserPrincipal principal) {
-        UserAccount account = users.findById(principal.id())
+        UserAccount account = users.findById(Objects.requireNonNull(principal.id()))
             .orElseThrow(() -> new ResourceNotFoundException("Authenticated account no longer exists"));
         if (!account.isActive()) {
             throw new ForbiddenOperationException("This account has been disabled");

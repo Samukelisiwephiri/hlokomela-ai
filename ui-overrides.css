@@ -1,0 +1,24 @@
+.nav-actions { display: flex; align-items: center; gap: .7rem; }
+.language-control { display: flex; align-items: center; gap: .35rem; font-size: .9rem; color: #31565a; }
+.language-select { padding: .35rem .5rem; border-radius: 999px; border: 1px solid var(--line); }
+.hero-eyebrow { color: var(--aqua); }
+.solution-lead { max-width: 650px; color: #416267; }
+.role-intro { margin: .65rem 0 0; color: var(--muted); }
+.role-continue { margin-top: .25rem; }
+.level-26 { height: 26%; }
+.level-34 { height: 34%; }
+.level-30 { height: 30%; }
+.level-45 { height: 45%; }
+.level-39 { height: 39%; }
+.level-72 { height: 72%; }
+.level-90 { height: 90%; }
+.section-spaced { margin-top: 14px; }
+#chart .level-20 { height: 20%; }
+#chart .level-30 { height: 30%; }
+#chart .level-40 { height: 40%; }
+#chart .level-50 { height: 50%; }
+#chart .level-60 { height: 60%; }
+#chart .level-70 { height: 70%; }
+#chart .level-80 { height: 80%; }
+#chart .level-90 { height: 90%; }
+#chart .level-100 { height: 100%; }

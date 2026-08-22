@@ -1,4 +1,5 @@
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <PubSubClient.h>
 
 const char* ssid = "Wokwi-GUEST";
@@ -14,8 +15,12 @@ const int VIBRATION_PIN = 32;
 const char* MQTT_HOST = "broker.emqx.io";
 const int MQTT_PORT = 1883;
 const char* MQTT_TOPIC = "hlokomela/demo/pipe-01";
+// Set this to the deployed API URL when the backend is hosted outside Wokwi.
+const char* API_URL = "http://YOUR_API_HOST:8080/api/v1/telemetry/readings";
+const char* DEVICE_API_KEY = "demo-device-key-change-me";
 
 WiFiClient wifiClient;
+WiFiClient apiClient;
 PubSubClient mqtt(wifiClient);
 
 void connectWiFi() {
@@ -40,6 +45,22 @@ void connectMQTT() {
       delay(1500);
     }
   }
+}
+
+void sendToApi(float flow, float pressure, float vibration) {
+  if (String(API_URL).indexOf("YOUR_API_HOST") >= 0 || WiFi.status() != WL_CONNECTED) return;
+  HTTPClient http;
+  if (!http.begin(apiClient, API_URL)) return;
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("X-Device-Key", DEVICE_API_KEY);
+  char body[180];
+  snprintf(body, sizeof(body),
+    "{\"deviceId\":\"PIPE-01\",\"flow\":%.1f,\"pressure\":%.2f,\"vibration\":%.1f}",
+    flow, pressure, vibration);
+  int status = http.POST((uint8_t*)body, strlen(body));
+  Serial.print("API telemetry status: ");
+  Serial.println(status);
+  http.end();
 }
 
 void setup() {
@@ -84,6 +105,7 @@ void loop() {
     "{\"deviceId\":\"PIPE-01\",\"flow\":%.1f,\"pressure\":%.2f,\"vibration\":%.1f,\"status\":\"%s\"}",
     flow, pressure, vibration, status.c_str());
   mqtt.publish(MQTT_TOPIC, payload);
+  sendToApi(flow, pressure, vibration);
   Serial.print("Published: ");
   Serial.println(payload);
   Serial.println("--------------------------------");

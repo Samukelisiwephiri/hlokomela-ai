@@ -72,7 +72,22 @@
     return request('/api/v1/community-reports', { method: 'POST', body: form });
   }
 
+  async function submitTelemetry(reading, deviceKey) {
+    return request('/api/v1/telemetry/readings', {
+      method: 'POST',
+      headers: { 'X-Device-Key': deviceKey },
+      body: JSON.stringify(reading)
+    });
+  }
+
+  async function askAssistant(question, language) {
+    return request('/api/v1/ai/assistant', {
+      method: 'POST',
+      body: JSON.stringify({ question, language })
+    });
+  }
+
   window.HlokomelaAPI = {
-    API_BASE, request, login, register, submitReport, currentUser, isAuthenticated, clearSession
+    API_BASE, request, login, register, submitReport, submitTelemetry, askAssistant, currentUser, isAuthenticated, clearSession
   };
 })();
