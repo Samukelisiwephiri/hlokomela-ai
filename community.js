@@ -75,6 +75,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   updateCommunityGreeting();
 
+  function renderReports(page) {
+    const list = document.getElementById('my-reports-list');
+    if (!list) return;
+    const reports = page?.content || [];
+    list.innerHTML = reports.length ? reports.slice(0, 3).map(report =>
+      `<div class="report-item"><h3>${report.reference}</h3><p><strong>${report.status.replaceAll('_', ' ')}</strong> · ${report.location}</p><p>${report.description}</p></div>`
+    ).join('') : '<p class="small">No reports submitted yet.</p>';
+  }
+
+  async function loadReports() {
+    if (!window.HlokomelaAPI?.isAuthenticated()) return;
+    try {
+      renderReports(await window.HlokomelaAPI.request('/api/v1/community-reports/mine'));
+    } catch (error) {
+      const list = document.getElementById('my-reports-list');
+      if (list) list.innerHTML = `<p class="small">${error.message}</p>`;
+    }
+  }
+
+  loadReports();
+
   openReport?.addEventListener('click', () => {
     if (!hasConsent()) {
       showConsentModal();
@@ -98,26 +119,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const ai = window.HlokomelaAI;
     const lang = ai ? ai.getLanguage() : 'en';
     const fileInput = document.getElementById('report-file');
+    const typeInput = document.getElementById('report-type');
     const locationInput = document.getElementById('report-location');
     const descInput = document.getElementById('report-desc');
     const photoName = fileInput?.files?.[0]?.name || '';
     const location = locationInput?.value?.trim() || '';
     const description = descInput?.value?.trim() || '';
     const report = {
-      id: `RPT-${Date.now()}`,
-      photo: photoName,
+      type: typeInput?.value || 'OTHER',
       location,
       description,
-      timestamp: new Date().toISOString(),
-      status: 'Reported'
+      consentGiven: hasConsent()
     };
-    const stored = JSON.parse(localStorage.getItem('hlokomela_reports') || '[]');
-    stored.unshift(report);
-    localStorage.setItem('hlokomela_reports', JSON.stringify(stored.slice(0, 50)));
-    const confirmMsg = ai ? ai.translate('report_confirm', lang) : 'Report received — you\'ll be notified as it\'s reviewed.';
-    if (note) note.textContent = confirmMsg;
-    form.reset();
-    reportModal.classList.remove('open');
+    const photo = fileInput?.files?.[0];
+    if (!window.HlokomelaAPI?.isAuthenticated()) {
+      if (note) note.textContent = 'Please sign in before submitting a report.';
+      return;
+    }
+    if (note) note.textContent = 'Submitting report...';
+    window.HlokomelaAPI.submitReport(report, photo).then(() => {
+      const confirmMsg = ai ? ai.translate('report_confirm', lang) : 'Report received.';
+      if (note) note.textContent = confirmMsg;
+      form.reset();
+      reportModal.classList.remove('open');
+      loadReports();
+    }).catch(error => {
+      if (note) note.textContent = error.message;
+    });
   });
 
   function handleAssistantReply(question) {

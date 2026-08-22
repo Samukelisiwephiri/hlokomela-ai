@@ -76,10 +76,7 @@
           <p class="card-label" data-i18n="card_reports_title">My reports</p>
           <span class="badge warning">In progress</span>
         </div>
-        <h3>Report #1023</h3>
-        <p><strong>Status:</strong> In progress</p>
-        <p><strong>Assigned team:</strong> Municipality crew</p>
-        <p><strong>ETA:</strong> 2 hours</p>
+        <div id="my-reports-list"><p class="small">Loading your reports...</p></div>
       </article>
 
       <article class="card">
@@ -150,8 +147,18 @@
         <button type="button" class="close-btn" id="close-report">×</button>
       </div>
       <form id="issue-form">
+        <label data-i18n="report_type">Problem type
+          <select id="report-type" required>
+            <option value="LEAK">Leak</option>
+            <option value="BURST_PIPE">Burst pipe</option>
+            <option value="LOW_PRESSURE">Low pressure</option>
+            <option value="NO_WATER">No water</option>
+            <option value="WATER_QUALITY">Water quality</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </label>
         <label data-i18n="report_photo">Upload photo
-          <input type="file" accept="image/*" id="report-file" required>
+          <input type="file" accept="image/*" id="report-file">
         </label>
         <!-- TODO: replace text input with geolocation / pin-drop map for real deployment -->
         <label data-i18n="report_location">Location
@@ -170,6 +177,7 @@
   </div>
 
   <script src="ai.js"></script>
+  <script src="api.js"></script>
   <script src="community.js"></script>
 </body>
 </html>

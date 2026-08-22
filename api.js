@@ -1,0 +1,78 @@
+(function () {
+  const configuredBase = window.HLOKOMELA_API_URL || localStorage.getItem('hlokomela-api-url');
+  const API_BASE = (configuredBase || 'http://localhost:8080').replace(/\/$/, '');
+  const TOKEN_KEY = 'hlokomela-access-token';
+  const USER_KEY = 'hlokomela-user';
+
+  async function request(path, options = {}) {
+    const headers = new Headers(options.headers || {});
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+    if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+
+    const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    if (response.status === 401) {
+      clearSession();
+      throw new Error('Your session has expired. Please sign in again.');
+    }
+
+    const contentType = response.headers.get('content-type') || '';
+    const payload = contentType.includes('application/json') ? await response.json() : await response.text();
+    if (!response.ok) {
+      const message = typeof payload === 'object' && payload?.message
+        ? payload.message
+        : `Request failed (${response.status})`;
+      throw new Error(message);
+    }
+    return payload;
+  }
+
+  function clearSession() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+  }
+
+  function saveSession(auth) {
+    localStorage.setItem(TOKEN_KEY, auth.accessToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(auth.user));
+    return auth;
+  }
+
+  function currentUser() {
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; }
+  }
+
+  function isAuthenticated() {
+    return Boolean(localStorage.getItem(TOKEN_KEY));
+  }
+
+  async function login(email, password) {
+    return saveSession(await request('/api/v1/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    }));
+  }
+
+  async function register(details) {
+    return saveSession(await request('/api/v1/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(details)
+    }));
+  }
+
+  async function submitReport(report, photo) {
+    if (!photo) {
+      return request('/api/v1/community-reports', { method: 'POST', body: JSON.stringify(report) });
+    }
+    const form = new FormData();
+    form.append('report', new Blob([JSON.stringify(report)], { type: 'application/json' }));
+    form.append('photo', photo);
+    return request('/api/v1/community-reports', { method: 'POST', body: form });
+  }
+
+  window.HlokomelaAPI = {
+    API_BASE, request, login, register, submitReport, currentUser, isAuthenticated, clearSession
+  };
+})();

@@ -23,17 +23,19 @@
           <input type="text" placeholder="Water Services" required>
         </label>
         <label>Email address
-          <input type="email" placeholder="ops@municipality.gov.za" required>
+          <input name="email" type="email" placeholder="ops@municipality.gov.za" required>
         </label>
         <label>Password
-          <input type="password" placeholder="••••••••" required>
+          <input name="password" type="password" placeholder="Your password" required>
         </label>
         <button type="submit" data-i18n="municipality_login_button_text">Enter municipality dashboard</button>
       </form>
+      <p class="form-error" id="login-error" role="alert" hidden></p>
       <a class="back-link" href="index.html">Back to home</a>
     </section>
   </main>
   <script src="ai.js"></script>
+  <script src="api.js"></script>
   <script src="login.js"></script>
 </body>
 </html>

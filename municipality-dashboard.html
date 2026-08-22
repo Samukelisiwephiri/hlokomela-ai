@@ -37,6 +37,8 @@
     </main>
   </div>
   <script src="ai.js"></script>
+  <script src="api.js"></script>
+  <script src="municipality.js"></script>
   <script>
     const pipes={"P-101":{flow:"48 L/min",pressure:"0.8 bar",vibration:"High",confidence:"96%",failure:"Within 12 hours",team:"Dispatch maintenance team",risk:"HIGH RISK",className:"red"},"P-102":{flow:"22 L/min",pressure:"3.9 bar",vibration:"Normal",confidence:"12%",failure:"No immediate failure predicted",team:"Continue monitoring",risk:"HEALTHY",className:"green"},"P-103":{flow:"36 L/min",pressure:"1.5 bar",vibration:"Moderate",confidence:"61%",failure:"Within 36 hours",team:"Schedule Team 7",risk:"MEDIUM RISK",className:"amber"},"P-104":{flow:"44 L/min",pressure:"1.0 bar",vibration:"High",confidence:"89%",failure:"Within 18 hours",team:"Dispatch maintenance team",risk:"HIGH RISK",className:"red"}};
     function showPipe(id){const p=pipes[id];if(!p)return;document.querySelector('#pipe-detail h3').innerHTML='Pipe '+id+' <span class="pill '+p.className+'">'+p.risk+'</span>';document.getElementById('detail-flow').textContent=p.flow;document.getElementById('detail-pressure').textContent=p.pressure;document.getElementById('detail-vibration').textContent=p.vibration;document.getElementById('detail-confidence').textContent=p.confidence;document.getElementById('detail-failure').innerHTML='<strong>Predicted failure:</strong> '+p.failure;document.getElementById('dispatch').textContent=p.team;document.getElementById('map').scrollIntoView({behavior:'smooth',block:'start'})}

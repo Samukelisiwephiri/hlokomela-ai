@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: hlokomela-api
+  datasource:
+    url: jdbc:h2:file:./data/hlokomela
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  jackson:
+    default-property-inclusion: non_null
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+
+app:
+  security:
+    # Development-only defaults. Set both values through environment variables before deployment.
+    jwt-secret: ${JWT_SECRET:aGxva29tZWxhLWFpLWRldmVsb3BtZW50LXNlY3JldC1rZXktY2hhbmdlLXRoaXMtYmVmb3JlLXByb2R1Y3Rpb24tMjAyNg==}
+    jwt-expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+    device-api-key: ${DEVICE_API_KEY:demo-device-key-change-me}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://127.0.0.1:3000,http://localhost:5500,http://127.0.0.1:5500}
+  storage:
+    upload-directory: ${UPLOAD_DIRECTORY:./uploads}
+    max-file-size-bytes: ${UPLOAD_MAX_FILE_SIZE_BYTES:5242880}
+  demo-data:
+    enabled: ${SEED_DEMO_DATA:true}
+
+logging:
+  level:
+    za.co.hlokomela: INFO
