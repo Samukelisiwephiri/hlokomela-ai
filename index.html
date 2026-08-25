@@ -26,7 +26,7 @@
   </style>
 </head>
 <body>
-  <header class="nav"><div class="container nav-inner"><a class="brand" href="#home"><span class="brand-mark"><span>◌</span></span>Hlokomela AI</a><nav class="nav-links" aria-label="Main navigation"><a href="#solution" data-i18n="nav_platform">Platform</a><a href="#how-it-works" data-i18n="nav_how">How it works</a><a href="iot-dashboard.html" data-i18n="nav_iot">Live IoT</a></nav><div class="nav-actions"><label class="language-control"><span data-i18n="language_label">Language</span><select id="language-selector" class="language-select"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label><button class="btn btn-outline" type="button" data-open="role" data-i18n="login_button">Login</button></div></div></header>
+  <header class="nav"><div class="container nav-inner"><a class="brand" href="#home"><span class="brand-mark"><span>◌</span></span>Hlokomela AI</a><nav class="nav-links" aria-label="Main navigation"><a href="#solution" data-i18n="nav_platform">Platform</a><a href="#how-it-works" data-i18n="nav_how">How it works</a><a href="iot-dashboard.html" data-i18n="nav_iot">Live IoT</a></nav><div class="nav-actions"><label class="language-control"><span data-i18n="language_label">Language</span><select id="language-selector" class="language-select"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label><button class="btn btn-outline" type="button" data-open="role" data-i18n="login_button">Login</button></div><button class="menu" type="button" aria-label="Open navigation menu">☰</button></div></header>
   <main>
     <section class="hero" id="home"><div class="container hero-grid"><div><div class="eyebrow" class="hero-eyebrow">Water intelligence for municipalities</div><h1>Stop leaks before they become crises.</h1><p class="lead">Hlokomela AI combines smart pipe monitoring and artificial intelligence to help water teams protect every drop.</p><div class="hero-actions"><a class="btn btn-primary" href="municipality-dashboard.html">Open command centre <span>→</span></a><a class="btn btn-light" href="iot-dashboard.html">Connect live IoT data</a></div><div class="proof"><div><strong>Earlier</strong>action on risks</div><div><strong>Smarter</strong>maintenance decisions</div><div><strong>Live</strong>sensor visibility</div></div></div><div class="signal-card"><div class="mini-top"><div><strong>Municipal network</strong><br><small>Live priority overview</small></div><div class="risk">● High risk</div></div><div class="map"><span class="pin high"><b></b></span><span class="pin mid"><b></b></span><span class="pin low"><b></b></span></div><div class="alert-row"><span class="alert-dot"></span><span><strong>Central Main</strong> — pressure anomaly detected by the live sensor feed</span></div></div></div></section>
     <section class="problem"><div class="container split"><div><div class="eyebrow">The challenge</div><h2>Municipalities are asked to react too late.</h2></div><div><div class="pain-list"><div class="pain"><span>✦</span><div><strong>Water is already lost</strong><br>Leaks can run unnoticed for days before a repair team is sent.</div></div><div class="pain"><span>✦</span><div><strong>Repairs cost more</strong><br>Small pipe failures can turn into damaged roads, outages, and expensive emergency work.</div></div><div class="pain"><span>✦</span><div><strong>Communities feel unheard</strong><br>Residents report issues without clear feedback or visibility of repair progress.</div></div></div><p class="statement">Hlokomela means “to care for.” We help municipalities care for the water network before a small warning becomes a major failure.</p></div></div></section>
@@ -50,6 +50,22 @@
       const destination = selected.value === 'municipality' ? 'municipality-login.html' : 'community-login.html';
       window.location.href = destination;
     });
+    /* Mobile nav toggle */
+    const menuBtn = document.querySelector('.menu');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuBtn && navLinks) {
+      menuBtn.setAttribute('aria-label', 'Open navigation menu');
+      menuBtn.innerHTML = '☰';
+      menuBtn.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('mobile-open');
+        menuBtn.innerHTML = open ? '✕' : '☰';
+      });
+    }
   </script>
+  <style>
+    @media (max-width:800px) {
+      .nav-links.mobile-open { display:flex !important; flex-direction:column; position:absolute; top:72px; left:0; right:0; background:rgba(255,253,249,.97); padding:16px 20px; border-bottom:1px solid rgba(214,226,222,.8); z-index:19; gap:.8rem; }
+    }
+  </style>
 </body>
 </html>
