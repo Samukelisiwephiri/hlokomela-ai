@@ -21,6 +21,7 @@ import za.co.hlokomela.api.repository.AlertRepository;
 import za.co.hlokomela.api.repository.IncidentRepository;
 import za.co.hlokomela.api.repository.MaintenanceWorkOrderRepository;
 import za.co.hlokomela.api.service.RiskAssessmentService.RiskAssessment;
+import za.co.hlokomela.api.service.SmsNotificationService;
 import za.co.hlokomela.api.web.dto.OperationsDtos.DispatchRequest;
 
 @Service
@@ -33,15 +34,17 @@ public class IncidentService {
     private final MaintenanceWorkOrderRepository workOrders;
     private final CurrentUserService currentUsers;
     private final ReferenceGenerator references;
+    private final SmsNotificationService sms;
 
     public IncidentService(IncidentRepository incidents, AlertRepository alerts,
                            MaintenanceWorkOrderRepository workOrders, CurrentUserService currentUsers,
-                           ReferenceGenerator references) {
+                           ReferenceGenerator references, SmsNotificationService sms) {
         this.incidents = incidents;
         this.alerts = alerts;
         this.workOrders = workOrders;
         this.currentUsers = currentUsers;
         this.references = references;
+        this.sms = sms;
     }
 
     @Transactional
@@ -63,6 +66,8 @@ public class IncidentService {
             Incident saved = incidents.save(existing);
             if (escalated) {
                 createAlert(saved, "Risk escalated for " + pipe.getCode(), assessment.summary());
+                sms.notifyMunicipality(pipe.getMunicipality().getId(), "CRITICAL_INCIDENT",
+                    "CRITICAL: Risk escalated to " + assessment.riskLevel().name() + " at " + pipe.getCode() + ". " + assessment.summary());
             }
             return saved;
         }
@@ -74,6 +79,8 @@ public class IncidentService {
         Incident saved = incidents.save(incident);
         createAlert(saved, "New " + assessment.riskLevel().name().toLowerCase() + " risk at " + pipe.getCode(),
             assessment.recommendedAction());
+        sms.notifyMunicipality(pipe.getMunicipality().getId(), "NEW_INCIDENT",
+            "New " + assessment.riskLevel().name() + " risk incident at " + pipe.getCode() + ". " + assessment.recommendedAction());
         return saved;
     }
 
@@ -86,6 +93,8 @@ public class IncidentService {
             assessment.recommendedAction(), assessment.estimatedWaterLossLitres());
         Incident saved = incidents.save(incident);
         createAlert(saved, "New community report: " + report.getReference(), assessment.recommendedAction());
+        sms.notifyMunicipality(report.getMunicipality().getId(), "COMMUNITY_REPORT",
+            "New community report " + report.getReference() + " at " + pipeText + ". " + assessment.recommendedAction());
         return saved;
     }
 
