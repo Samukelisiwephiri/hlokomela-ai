@@ -1,15 +1,12 @@
 services:
   - type: web
     name: hlokomela-api
-    runtime: java
+    runtime: docker
     rootDir: backend
-    buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/hlokomela-api-1.0.0.jar --server.port=$PORT
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     healthCheckPath: /api/v1/health
     envVars:
-      - key: JAVA_VERSION
-        value: "17"
       - key: CORS_ALLOWED_ORIGINS
         value: https://samukelisiwephiri.github.io
       - key: JWT_SECRET
