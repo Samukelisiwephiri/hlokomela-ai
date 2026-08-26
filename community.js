@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let coordinates = { latitude: null, longitude: null };
 
   const currentUser = window.HlokomelaAPI?.currentUser();
-  if (window.HlokomelaAPI?.isAuthenticated()
-      && currentUser?.role
-      && currentUser.role !== 'COMMUNITY_MEMBER') {
+  if (!window.HlokomelaAPI?.isAuthenticated()) {
+    window.location.replace('community-login.html');
+    return;
+  }
+  if (currentUser?.role && currentUser.role !== 'COMMUNITY_MEMBER') {
     window.location.replace('community-login.html');
     return;
   }
@@ -136,12 +138,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   async function loadReports() {
-    if (!window.HlokomelaAPI?.isAuthenticated()) return;
+    const list = document.getElementById('my-reports-list');
+    if (!window.HlokomelaAPI?.isAuthenticated()) {
+      if (list) list.innerHTML = '<p class="small">Please <a href="community-login.html">sign in</a> to view your reports.</p>';
+      return;
+    }
+    if (list) list.innerHTML = '<p class="small">Loading...</p>';
     try {
       renderReports(await window.HlokomelaAPI.request('/api/v1/community-reports/mine'));
     } catch (error) {
-      const list = document.getElementById('my-reports-list');
-      if (list) list.innerHTML = `<p class="small">${error.message}</p>`;
+      if (list) {
+        if (error.message && error.message.includes('session has expired')) {
+          list.innerHTML = '<p class="small">Session expired. <a href="community-login.html">Sign in again</a>.</p>';
+        } else {
+          list.innerHTML = '<p class="small">Could not load reports. Please check your connection and try again.</p>';
+        }
+      }
     }
   }
 
