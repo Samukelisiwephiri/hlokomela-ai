@@ -215,7 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
       reportModal.classList.remove('open');
       loadReports();
     }).catch(error => {
-      if (note) note.textContent = error.message;
+      const isTimeout = error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed'));
+      if (note) note.textContent = isTimeout
+        ? 'Server is waking up — please wait 30 seconds and try again.'
+        : error.message;
     });
   });
 
