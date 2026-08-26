@@ -55,7 +55,12 @@ public class SecurityConfig {
     @SuppressWarnings("unused")
     CorsConfigurationSource corsConfigurationSource(CorsProperties properties) {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(properties.getAllowedOrigins());
+        List<String> origins = new java.util.ArrayList<>(properties.getAllowedOrigins());
+        // Always allow GitHub Pages for this project
+        if (!origins.contains("https://samukelisiwephiri.github.io")) {
+            origins.add("https://samukelisiwephiri.github.io");
+        }
+        configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Device-Key"));
         configuration.setExposedHeaders(List.of("Location"));
