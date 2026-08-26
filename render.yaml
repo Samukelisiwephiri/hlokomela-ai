@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: hlokomela-api
+    runtime: java
+    rootDir: backend
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/hlokomela-api-1.0.0.jar
+    plan: free
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://samukelisiwephiri.github.io
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION_MINUTES
+        value: 120
+      - key: DEVICE_API_KEY
+        generateValue: true
+      - key: SEED_DEMO_DATA
+        value: true
+      - key: AI_PROVIDER_ENABLED
+        value: true
+      - key: AI_PROVIDER_BASE_URL
+        value: https://api-ap-southeast-1.modelarts-maas.com/openai/v1
+      - key: AI_PROVIDER_API_KEY
+        sync: false
+      - key: AI_PROVIDER_MODEL
+        value: glm-5.1
+      - key: SMS_ENABLED
+        value: true
+      - key: SMS_BASE_URL
+        value: https://api-ap-southeast-1.modelarts-maas.com/openai/v1
+      - key: SMS_API_KEY
+        sync: false
+      - key: SMS_MODEL
+        value: deepseek-v4-flash

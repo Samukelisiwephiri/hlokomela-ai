@@ -45,6 +45,12 @@ app:
     api-key: ${AI_PROVIDER_API_KEY:}
     model: ${AI_PROVIDER_MODEL:glm-5.1}
     timeout-seconds: ${AI_PROVIDER_TIMEOUT_SECONDS:20}
+  sms:
+    enabled: ${SMS_ENABLED:false}
+    base-url: ${SMS_BASE_URL:https://api-ap-southeast-1.modelarts-maas.com/openai/v1}
+    api-key: ${SMS_API_KEY:}
+    model: ${SMS_MODEL:deepseek-v4-flash}
+    timeout-seconds: ${SMS_TIMEOUT_SECONDS:20}
 
 logging:
   level:
