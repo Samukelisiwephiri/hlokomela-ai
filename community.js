@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.replace('community-login.html');
     return;
   }
+  const isDemoMode = localStorage.getItem('hlokomela-demo-mode') === 'true';
 
   function updateLocationPreview() {
     const { latitude, longitude } = coordinates;
@@ -143,6 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (list) list.innerHTML = '<p class="small">Please <a href="community-login.html">sign in</a> to view your reports.</p>';
       return;
     }
+    // Demo mode — no real API token available
+    if (localStorage.getItem('hlokomela-demo-mode') === 'true') {
+      if (list) list.innerHTML = '<p class="small">Demo mode — reports will appear here once the server is connected.</p>';
+      return;
+    }
     if (list) list.innerHTML = '<p class="small">Loading...</p>';
     try {
       renderReports(await window.HlokomelaAPI.request('/api/v1/community-reports/mine'));
@@ -202,6 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const photo = fileInput?.files?.[0];
     if (!window.HlokomelaAPI?.isAuthenticated()) {
       if (note) note.textContent = 'Please sign in before submitting a report.';
+      return;
+    }
+    // Demo mode — simulate submission
+    if (localStorage.getItem('hlokomela-demo-mode') === 'true') {
+      if (note) note.textContent = 'Demo mode: report noted locally. Connect to live server to submit for real.';
+      form.reset();
+      coordinates = { latitude: null, longitude: null };
+      updateLocationPreview();
+      reportModal.classList.remove('open');
       return;
     }
     if (note) note.textContent = 'Submitting report...';
