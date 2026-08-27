@@ -9,7 +9,7 @@
       .catch(function () { /* silent — just keeping it warm */ });
   }
 
-  // Ping immediately on page load then every 8 minutes
-  ping();
+  // Delay first ping by 5s to not block page load, then every 8 minutes
+  setTimeout(ping, 5000);
   setInterval(ping, 8 * 60 * 1000);
 })();

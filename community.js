@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const locationPreview = document.getElementById('location-preview');
   const locationMap = document.getElementById('location-map');
   const locationMapLink = document.getElementById('location-map-link');
+  const logoutBtn = document.getElementById('logout-btn');
   let coordinates = { latitude: null, longitude: null };
 
   const currentUser = window.HlokomelaAPI?.currentUser();
@@ -165,7 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadReports();
 
-  openReport?.addEventListener('click', () => {
+  logoutBtn?.addEventListener('click', () => {
+    window.HlokomelaAPI?.clearSession();
+    localStorage.removeItem('hlokomela-demo-mode');
+    localStorage.removeItem('hlokomela-community-name');
+    window.location.href = 'community-login.html';
+  });
     if (!hasConsent()) {
       showConsentModal();
       return;
@@ -212,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // Demo mode — simulate submission
     if (localStorage.getItem('hlokomela-demo-mode') === 'true') {
-      if (note) note.textContent = 'Demo mode: report noted locally. Connect to live server to submit for real.';
+    if (note) { note.textContent = 'Demo mode: report noted locally. Connect to live server to submit for real.'; note.hidden = false; }
       form.reset();
       coordinates = { latitude: null, longitude: null };
       updateLocationPreview();
@@ -222,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (note) note.textContent = 'Submitting report...';
     window.HlokomelaAPI.submitReport(report, photo).then(() => {
       const confirmMsg = ai ? ai.translate('report_confirm', lang) : 'Report received.';
-      if (note) note.textContent = confirmMsg;
+      if (note) { note.textContent = confirmMsg; note.hidden = false; }
       form.reset();
       coordinates = { latitude: null, longitude: null };
       updateLocationPreview();
@@ -230,10 +236,8 @@ document.addEventListener('DOMContentLoaded', () => {
       reportModal.classList.remove('open');
       loadReports();
     }).catch(error => {
-      const isTimeout = error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed'));
-      if (note) note.textContent = isTimeout
-        ? 'Server is waking up — please wait 30 seconds and try again.'
-        : error.message;
+      const isTimeout = error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed')) || error.name === 'AbortError';
+      if (note) { note.textContent = isTimeout ? 'Server is waking up — please wait 30 seconds and try again.' : error.message; note.hidden = false; }
     });
   });
 

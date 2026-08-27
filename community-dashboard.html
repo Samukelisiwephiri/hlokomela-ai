@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Community Dashboard | Hlokomela AI</title>
-  <link rel="stylesheet" href="community.css?v=20260822">
+  <link rel="stylesheet" href="community.css?v=20260827">
   <link rel="stylesheet" href="logo.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
         <h1 id="community-greeting">Hello, user 👋</h1>
         <p class="subtitle" data-i18n="community_subtitle">Welcome back. Your water network is being monitored in real time.</p>
       </div>
-      <div class="topbar-controls"><div class="status-pill" data-i18n="community_status">● Live updates</div><label class="language-control"><span data-i18n="language_label">Language</span><select id="language-selector"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label></div>
+      <div class="topbar-controls"><div class="status-pill" data-i18n="community_status">● Live updates</div><label class="language-control"><span data-i18n="language_label">Language</span><select id="language-selector"><option value="en">English</option><option value="zu">isiZulu</option><option value="af">Afrikaans</option></select></label><button class="logout-btn" id="logout-btn" type="button">Sign out</button></div>
     </header>
 
     <section class="cards-grid">
@@ -42,6 +42,10 @@
           <p class="card-label" data-i18n="card_ai_title">AI assistant</p>
           <span class="badge info">Instant</span>
         </div>
+        <div class="assistant-search-row">
+          <input id="assistant-input" type="text" placeholder="🔍 Search or ask anything about water..." data-i18n="chat_placeholder">
+          <button class="report-btn small" id="send-assistant" type="button">Search</button>
+        </div>
         <div class="prompt-list">
           <button class="prompt-chip" data-answer="Your pressure may be low because of a local blockage or a wider network issue. The municipality is reviewing nearby pressure trends now.">Why is my water pressure low?</button>
           <button class="prompt-chip" data-answer="A repair team has been notified and the expected response is within 4 hours based on the severity score.">Will this be fixed today?</button>
@@ -51,10 +55,6 @@
         <div class="assistant-response" id="assistant-response" data-i18n="assistant_hint">Ask the assistant anything about your local water service.</div>
         <div class="voice-row">
           <button class="report-btn small" id="voice-report" type="button" data-i18n="voice_button">🎤 Report using your voice</button>
-        </div>
-        <div class="assistant-input">
-          <input id="assistant-input" type="text" placeholder="Ask the assistant" data-i18n="chat_placeholder">
-          <button class="report-btn small" id="send-assistant" type="button">Ask</button>
         </div>
       </article>
 
@@ -179,15 +179,15 @@
           <input type="text" class="urgency-field" id="report-urgency" readonly data-i18n="report_urgency_text" value="AI will assess urgency after submission">
         </label>
         <button type="submit" class="report-btn full" data-i18n="report_submit">Submit</button>
-        <p class="form-note" id="form-note" data-i18n="report_confirm">Report received — you'll be notified as it's reviewed.</p>
+        <p class="form-note" id="form-note" data-i18n="report_confirm" hidden>Report received — you'll be notified as it's reviewed.</p>
       </form>
     </div>
   </div>
 
-  <script src="ai.js?v=20260823"></script>
+  <script src="ai.js?v=20260827"></script>
   <script src="config.js"></script>
-  <script src="api.js"></script>
+  <script src="api.js?v=20260827"></script>
   <script src="keepalive.js"></script>
-  <script src="community.js?v=20260823"></script>
+  <script src="community.js?v=20260827"></script>
 </body>
 </html>
