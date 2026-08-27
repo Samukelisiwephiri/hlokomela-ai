@@ -1,45 +1,55 @@
-﻿(function () {
-  const configuredBase = window.HLOKOMELA_API_URL || localStorage.getItem('hlokomela-api-url');
-  const API_BASE = (configuredBase || 'http://localhost:8080').replace(/\/$/, '');
-  const TOKEN_KEY = 'hlokomela-access-token';
-  const USER_KEY = 'hlokomela-user';
+(function () {
+  var configuredBase = window.HLOKOMELA_API_URL || localStorage.getItem('hlokomela-api-url');
+  var API_BASE = (configuredBase || 'http://localhost:8080').replace(/\/$/, '');
+  var TOKEN_KEY = 'hlokomela-access-token';
+  var USER_KEY = 'hlokomela-user';
 
-  async function request(path, options = {}) {
-    const headers = new Headers(options.headers || {});
-    const token = localStorage.getItem(TOKEN_KEY);
+  function getToken() { return localStorage.getItem(TOKEN_KEY); }
+
+  function request(path, options) {
+    options = options || {};
+    var headers = new Headers(options.headers || {});
+    var token = getToken();
     if (token) headers.set('Authorization', 'Bearer ' + token);
     if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 12000);
-    let response;
-    try {
-      response = await fetch(API_BASE + path, { ...options, headers, signal: controller.signal });
-    } finally { clearTimeout(timer); }
-    const contentType = response.headers.get('content-type') || '';
-    const payload = contentType.includes('application/json') ? await response.json() : await response.text();
-    if (response.status === 401) {
-      const isAuthEndpoint = path.includes('/auth/login') || path.includes('/auth/register');
-      if (!isAuthEndpoint) {
-        clearSession();
-        throw new Error('Your session has expired. Please sign in again.');
-      }
-      const errPayload = typeof payload === 'object' ? payload : {};
-      throw new Error(errPayload && errPayload.message ? errPayload.message : 'Invalid email or password.');
-        ? errPayload.message
-        : 'Invalid email or password. Please check your credentials.';
-      throw new Error(message);
-    }
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 12000);
 
-    if (!response.ok) {
-      const message = typeof payload === 'object' && payload?.message
-        ? payload.message
-        : `Request failed (${response.status})`;
-      throw new Error(message);
-    }
-    return payload;
+    return fetch(API_BASE + path, Object.assign({}, options, { headers: headers, signal: controller.signal }))
+      .then(function (response) {
+        clearTimeout(timer);
+        var contentType = response.headers.get('content-type') || '';
+        var payloadPromise = contentType.indexOf('application/json') !== -1
+          ? response.json()
+          : response.text();
+        return payloadPromise.then(function (payload) {
+          if (response.status === 401) {
+            var isAuth = path.indexOf('/auth/login') !== -1 || path.indexOf('/auth/register') !== -1;
+            if (!isAuth) {
+              clearSession();
+              throw new Error('Your session has expired. Please sign in again.');
+            }
+            var msg = (payload && typeof payload === 'object' && payload.message)
+              ? payload.message
+              : 'Invalid email or password. Please check your credentials.';
+            throw new Error(msg);
+          }
+          if (!response.ok) {
+            var errMsg = (payload && typeof payload === 'object' && payload.message)
+              ? payload.message
+              : 'Request failed (' + response.status + ')';
+            throw new Error(errMsg);
+          }
+          return payload;
+        });
+      })
+      .catch(function (err) {
+        clearTimeout(timer);
+        throw err;
+      });
   }
 
   function clearSession() {
@@ -54,38 +64,38 @@
   }
 
   function currentUser() {
-    try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; }
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch (e) { return null; }
   }
 
   function isAuthenticated() {
-    return Boolean(localStorage.getItem(TOKEN_KEY));
+    return Boolean(getToken());
   }
 
-  async function login(email, password) {
-    return saveSession(await request('/api/v1/auth/login', {
+  function login(email, password) {
+    return request('/api/v1/auth/login', {
       method: 'POST',
-      body: JSON.stringify({ email, password })
-    }));
+      body: JSON.stringify({ email: email, password: password })
+    }).then(saveSession);
   }
 
-  async function register(details) {
-    return saveSession(await request('/api/v1/auth/register', {
+  function register(details) {
+    return request('/api/v1/auth/register', {
       method: 'POST',
       body: JSON.stringify(details)
-    }));
+    }).then(saveSession);
   }
 
-  async function submitReport(report, photo) {
+  function submitReport(report, photo) {
     if (!photo) {
       return request('/api/v1/community-reports', { method: 'POST', body: JSON.stringify(report) });
     }
-    const form = new FormData();
+    var form = new FormData();
     form.append('report', new Blob([JSON.stringify(report)], { type: 'application/json' }));
     form.append('photo', photo);
     return request('/api/v1/community-reports', { method: 'POST', body: form });
   }
 
-  async function submitTelemetry(reading, deviceKey) {
+  function submitTelemetry(reading, deviceKey) {
     return request('/api/v1/telemetry/readings', {
       method: 'POST',
       headers: { 'X-Device-Key': deviceKey },
@@ -93,14 +103,23 @@
     });
   }
 
-  async function askAssistant(question, language) {
+  function askAssistant(question, language) {
     return request('/api/v1/ai/assistant', {
       method: 'POST',
-      body: JSON.stringify({ question, language })
+      body: JSON.stringify({ question: question, language: language })
     });
   }
 
   window.HlokomelaAPI = {
-    API_BASE, request, login, register, submitReport, submitTelemetry, askAssistant, currentUser, isAuthenticated, clearSession
+    API_BASE: API_BASE,
+    request: request,
+    login: login,
+    register: register,
+    submitReport: submitReport,
+    submitTelemetry: submitTelemetry,
+    askAssistant: askAssistant,
+    currentUser: currentUser,
+    isAuthenticated: isAuthenticated,
+    clearSession: clearSession
   };
 })();
