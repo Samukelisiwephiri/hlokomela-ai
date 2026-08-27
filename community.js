@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (locationPreview) locationPreview.hidden = true;
       return;
     }
-    const mapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}&z=16`;
-    if (locationMap) locationMap.src = `${mapsUrl}&output=embed`;
+    const mapsUrl = `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}#map=16/${latitude}/${longitude}`;
+    if (locationMap) locationMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${longitude-0.005},${latitude-0.005},${longitude+0.005},${latitude+0.005}&layer=mapnik&marker=${latitude},${longitude}`;
     if (locationMapLink) locationMapLink.href = mapsUrl;
     if (locationPreview) locationPreview.hidden = false;
   }
@@ -172,6 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('hlokomela-community-name');
     window.location.href = 'community-login.html';
   });
+
+  openReport?.addEventListener('click', () => {
     if (!hasConsent()) {
       showConsentModal();
       return;
