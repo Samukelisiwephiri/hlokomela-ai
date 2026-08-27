@@ -18,7 +18,15 @@
         </div>
       </div>
       <p class="intro" data-i18n="municipality_login_intro">Secure sign-in for ward supervisors and municipal operations teams.</p>
-      <form class="login-form" data-role="municipality">
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <!-- Login form -->
+      <form class="login-form" data-role="municipality" id="login-form">
         <label>Department
           <input type="text" placeholder="Water Services" required>
         </label>
@@ -30,6 +38,27 @@
         </label>
         <button type="submit" data-i18n="municipality_login_button_text">Enter municipality dashboard</button>
       </form>
+
+      <!-- Register form -->
+      <form class="login-form register-form" data-role="municipality" id="register-form" hidden>
+        <label>First name
+          <input name="firstName" type="text" placeholder="John" required>
+        </label>
+        <label>Last name
+          <input name="lastName" type="text" placeholder="Dlamini" required>
+        </label>
+        <label>Email address
+          <input name="email" type="email" placeholder="ops@municipality.gov.za" required>
+        </label>
+        <label>Phone number (optional)
+          <input name="phone" type="tel" placeholder="+27 71 234 5678">
+        </label>
+        <label>Password
+          <input name="password" type="password" placeholder="Min 6 characters" required minlength="6">
+        </label>
+        <button type="submit">Create account &amp; sign in</button>
+      </form>
+
       <p class="form-error" id="login-error" role="alert" hidden></p>
       <p class="demo-hint">🔓 Demo: use any email &amp; any password to enter</p>
       <a class="back-link" href="index.html">Back to home</a>

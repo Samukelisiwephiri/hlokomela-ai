@@ -14,7 +14,73 @@ function demoLogin(role, email, password, fullName) {
   window.location.href = role === 'municipality' ? 'municipality-dashboard.html' : 'community-dashboard.html';
 }
 
-document.querySelectorAll('.login-form').forEach(form => {
+/* Tab switching between Sign In and Create Account */
+document.querySelectorAll('.auth-tabs').forEach(tabs => {
+  const loginForm = tabs.closest('.login-card').querySelector('#login-form');
+  const registerForm = tabs.closest('.login-card').querySelector('#register-form');
+  tabs.querySelectorAll('.auth-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const isRegister = tab.dataset.tab === 'register';
+      if (loginForm) loginForm.hidden = isRegister;
+      if (registerForm) registerForm.hidden = !isRegister;
+      const err = tabs.closest('.login-card').querySelector('#login-error');
+      if (err) err.hidden = true;
+    });
+  });
+});
+
+/* Register form submission */
+document.querySelectorAll('.register-form').forEach(form => {
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const role = form.dataset.role;
+    const firstName = form.querySelector('input[name="firstName"]')?.value?.trim();
+    const lastName = form.querySelector('input[name="lastName"]')?.value?.trim();
+    const email = form.querySelector('input[name="email"]')?.value?.trim();
+    const phone = form.querySelector('input[name="phone"]')?.value?.trim() || null;
+    const password = form.querySelector('input[name="password"]')?.value;
+    const submit = form.querySelector('button[type="submit"]');
+    const error = document.getElementById('login-error');
+
+    if (!firstName || !email || !password) {
+      if (error) { error.textContent = 'Please fill in all required fields.'; error.hidden = false; }
+      return;
+    }
+
+    submit.disabled = true;
+    submit.textContent = 'Creating account...';
+    if (error) error.hidden = true;
+
+    const userRole = role === 'municipality' ? 'MUNICIPAL_OPERATOR' : 'COMMUNITY_MEMBER';
+
+    if (window.HlokomelaAPI) {
+      try {
+        const auth = await window.HlokomelaAPI.register({ firstName, lastName, email, phone, password, role: userRole });
+        localStorage.removeItem('hlokomela-demo-mode');
+        localStorage.setItem('hlokomela-community-name', `${auth.user.firstName} ${auth.user.lastName}`.trim());
+        window.location.href = role === 'municipality' ? 'municipality-dashboard.html' : 'community-dashboard.html';
+        return;
+      } catch (regError) {
+        const msg = regError.message || '';
+        const isNetworkError = msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Request failed (5') || msg.includes('503');
+        if (!isNetworkError) {
+          if (error) { error.textContent = msg; error.hidden = false; }
+          submit.disabled = false;
+          submit.textContent = 'Create account & sign in';
+          return;
+        }
+        if (error) { error.textContent = 'Server starting up — entering demo mode.'; error.hidden = false; }
+      }
+    }
+
+    /* Demo fallback */
+    demoLogin(role, email, password, `${firstName} ${lastName}`.trim());
+  });
+});
+
+
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const role = form.dataset.role;

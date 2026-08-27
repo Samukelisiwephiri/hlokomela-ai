@@ -18,7 +18,15 @@
         </div>
       </div>
       <p class="intro" data-i18n="community_login_intro">Sign in to report issues, track alerts, and see local updates.</p>
-      <form class="login-form" data-role="community">
+
+      <!-- Tab switcher -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <!-- Login form -->
+      <form class="login-form" data-role="community" id="login-form">
         <label>Full name
           <input id="full-name-input" name="fullName" type="text" placeholder="Samukelisiwe" required>
         </label>
@@ -30,6 +38,27 @@
         </label>
         <button type="submit" data-i18n="login_button_text">Login to community dashboard</button>
       </form>
+
+      <!-- Register form -->
+      <form class="login-form register-form" data-role="community" id="register-form" hidden>
+        <label>First name
+          <input name="firstName" type="text" placeholder="Samukelisiwe" required>
+        </label>
+        <label>Last name
+          <input name="lastName" type="text" placeholder="Phiri" required>
+        </label>
+        <label>Email address
+          <input name="email" type="email" placeholder="you@example.com" required>
+        </label>
+        <label>Phone number (optional)
+          <input name="phone" type="tel" placeholder="+27 71 234 5678">
+        </label>
+        <label>Password
+          <input name="password" type="password" placeholder="Min 6 characters" required minlength="6">
+        </label>
+        <button type="submit">Create account &amp; sign in</button>
+      </form>
+
       <p class="form-error" id="login-error" role="alert" hidden></p>
       <p class="demo-hint">🔓 Demo: use any name, email &amp; any password to enter</p>
       <a class="back-link" href="index.html">Back to home</a>
