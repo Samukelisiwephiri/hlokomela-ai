@@ -64,7 +64,7 @@ document.querySelectorAll('.register-form').forEach(form => {
         return;
       } catch (regError) {
         const msg = regError.message || '';
-        const isNetworkError = msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Request failed (5') || msg.includes('503');
+        const isNetworkError = msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Request failed (5') || msg.includes('503') || regError.name === 'AbortError';
         if (!isNetworkError) {
           if (error) { error.textContent = msg; error.hidden = false; }
           submit.disabled = false;
@@ -117,7 +117,7 @@ document.querySelectorAll('.login-form:not(.register-form)').forEach(form => {
         return;
       } catch (loginError) {
         const msg = loginError.message || '';
-        const isNetworkError = msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Request failed (5') || msg.includes('Load failed') || msg.includes('503') || msg.includes('waking');
+        const isNetworkError = msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Request failed (5') || msg.includes('Load failed') || msg.includes('503') || msg.includes('waking') || loginError.name === 'AbortError';
         if (!isNetworkError) {
           if (error) { error.textContent = msg; error.hidden = false; }
           submit.disabled = false;

@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
   const configuredBase = window.HLOKOMELA_API_URL || localStorage.getItem('hlokomela-api-url');
   const API_BASE = (configuredBase || 'http://localhost:8080').replace(/\/$/, '');
   const TOKEN_KEY = 'hlokomela-access-token';
@@ -7,27 +7,32 @@
   async function request(path, options = {}) {
     const headers = new Headers(options.headers || {});
     const token = localStorage.getItem(TOKEN_KEY);
-    if (token) headers.set('Authorization', `Bearer ${token}`);
+    if (token) headers.set('Authorization', 'Bearer ' + token);
     if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
 
-    const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 12000);
+    let response;
+    try {
+      response = await fetch(API_BASE + path, { ...options, headers, signal: controller.signal });
+    } finally { clearTimeout(timer); }
+    const contentType = response.headers.get('content-type') || '';
+    const payload = contentType.includes('application/json') ? await response.json() : await response.text();
     if (response.status === 401) {
       const isAuthEndpoint = path.includes('/auth/login') || path.includes('/auth/register');
       if (!isAuthEndpoint) {
         clearSession();
         throw new Error('Your session has expired. Please sign in again.');
       }
-      const errPayload = contentType.includes('application/json') ? payload : {};
-      const message = typeof errPayload === 'object' && errPayload && errPayload.message
+      const errPayload = typeof payload === 'object' ? payload : {};
+      throw new Error(errPayload && errPayload.message ? errPayload.message : 'Invalid email or password.');
         ? errPayload.message
         : 'Invalid email or password. Please check your credentials.';
       throw new Error(message);
     }
 
-    const contentType = response.headers.get('content-type') || '';
-    const payload = contentType.includes('application/json') ? await response.json() : await response.text();
     if (!response.ok) {
       const message = typeof payload === 'object' && payload?.message
         ? payload.message
