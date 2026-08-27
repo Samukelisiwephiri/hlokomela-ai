@@ -80,7 +80,8 @@ document.querySelectorAll('.register-form').forEach(form => {
   });
 });
 
-
+/* Login form submission */
+document.querySelectorAll('.login-form:not(.register-form)').forEach(form => {
   form.addEventListener('submit', async event => {
     event.preventDefault();
     const role = form.dataset.role;
@@ -100,7 +101,6 @@ document.querySelectorAll('.register-form').forEach(form => {
     submit.textContent = 'Signing in...';
     if (error) error.hidden = true;
 
-    /* Try the real API first; fall back to demo mode if it is unreachable */
     if (window.HlokomelaAPI) {
       try {
         const auth = await window.HlokomelaAPI.login(email, password);
@@ -121,15 +121,13 @@ document.querySelectorAll('.register-form').forEach(form => {
         if (!isNetworkError) {
           if (error) { error.textContent = msg; error.hidden = false; }
           submit.disabled = false;
-          submit.textContent = submit.dataset.i18n === 'login_button_text' ? 'Login to community dashboard' : 'Login to municipality dashboard';
+          submit.textContent = role === 'municipality' ? 'Login to municipality dashboard' : 'Login to community dashboard';
           return;
         }
-        /* Network/server error — show message then fall through to demo */
-        if (error) { error.textContent = 'Server starting up — entering demo mode. Your data will sync when the server is ready.'; error.hidden = false; }
+        if (error) { error.textContent = 'Server starting up — entering demo mode.'; error.hidden = false; }
       }
     }
 
-    /* Demo mode: accept any non-empty credentials */
     demoLogin(role, email, password, fullName);
   });
 });
