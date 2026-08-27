@@ -14,8 +14,16 @@
 
     const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
     if (response.status === 401) {
-      clearSession();
-      throw new Error('Your session has expired. Please sign in again.');
+      const isAuthEndpoint = path.includes('/auth/login') || path.includes('/auth/register');
+      if (!isAuthEndpoint) {
+        clearSession();
+        throw new Error('Your session has expired. Please sign in again.');
+      }
+      const errPayload = contentType.includes('application/json') ? payload : {};
+      const message = typeof errPayload === 'object' && errPayload && errPayload.message
+        ? errPayload.message
+        : 'Invalid email or password. Please check your credentials.';
+      throw new Error(message);
     }
 
     const contentType = response.headers.get('content-type') || '';
